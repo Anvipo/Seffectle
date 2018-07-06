@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Seffectle</string>
+    <string name="action_change">Change schedule for this day</string>
+    <string name="action_remove">Clear schedule for all days</string>
+    <string name="class_begin_time">Class begin time</string>
+    <string name="class_end_time">Class end time</string>
+    <string name="class_name">Class name</string>
+    <string name="room_name">Room name</string>
+    <string name="teacher_name">Teacher name</string>
+    <string name="save_schedule">Save schedule</string>
+    <string name="class_serial_number">Class #</string>
+    <string name="class_type">Class type</string>
+
+    <string name="today_is">Today is</string>
+
+    <string name="accessToken_invalidated">AccessToken invalidated</string>
+    <string name="successful_authorization">Successful authorization</string>
+    <string name="unsuccessful_authorization">Unsuccessful authorization</string>
+    <string name="synchronize_with_server">Synchronize with server</string>
+    <string name="here_will_be_server_response">Here will be server response</string>
+    <string name="send_your_schedule_to_server">Send your schedule to server</string>
+    <string name="save_server_IP">Save server IP</string>
+    <string name="server_IP">192.168.1.68</string>
+    <string name="server_IP_hint">Server IP</string>
+    <string name="get_your_schedule_from_server">Get your schedule from Server</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="input_your_feedback_here">Input your feedback here</string>
+    <string name="log_into_vk">Log into VK</string>
+    <string name="log_out_from_vk">Log out from VK</string>
+    <string name="successful_logout">Successful logout</string>
+    <string name="server_response">SERVER RESPONSE:</string>
+    <string name="weird_answer">Weird answer</string>
+    <string name="schedule_was_edited_successfully">Schedule was edited successfully</string>
+    <string name="schedule_was_downloaded_successfully">Schedule was downloaded successfully</string>
+    <string name="feedback_was_uploaded_successfully">Feedback was uploaded successfully</string>
+
+    <string name="schedule_was_not_edited">Schedule was not edited</string>
+    <string name="synchronization_was_not_complete">Synchronization was not complete</string>
+    <string name="feedback_was_not_uploaded">Feedback was not uploaded</string>
+    <string name="you_must_log_in_to_use_the_server">You must log in to use the server</string>
+    <string name="cant_add_class">Can\'t add more classes, because you\'ll be tired of studying so much</string>
+    <string name="move_up_this_class">Move up this class</string>
+    <string name="move_down_this_class">Move down this class</string>
+    <string name="add_new_class">Add new class</string>
+    <string name="delete_classes">Delete all class</string>
+    <string name="remove_this_class">Remove this class</string>
+    <string name="format_begin_time_error">Error in class begin time</string>
+    <string name="format_end_time_error">Error in class end time</string>
+    <string name="wrong_time_interval">Wrong time interval</string>
+    <string name="time_of_classes_must_not_intersect">Time of classes must not intersect</string>
+    <string name="you_did_not_enter_the_message">You did not enter the message</string>
+    <string name="you_are_not_logged_in_via_VK">You are not logged in via VK</string>
+    <string name="entered_ip_is_not_correct">Entered IP isn\'t correct</string>
+    <string name="saved">saved</string>
+    <integer name="com_vk_sdk_AppId">6255824</integer>
+
+    <string-array name="class_types_array">
+        <item>Practice/Seminar</item>
+        <item>Lecture</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item name="monday">Monday</item>
+        <item name="tuesday">Tuesday</item>
+        <item name="wednesday">Wednesday</item>
+        <item name="thursday">Thursday</item>
+        <item name="friday">Friday</item>
+        <item name="saturday">Saturday</item>
+        <item name="sunday">Sunday</item>
+    </string-array>
+</resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dNDTeam.seffectle.restClient.SynchronizeActivity">
+
+    <Button
+        android:id="@+id/saveServerIP_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:drawableLeft="@android:drawable/ic_menu_save"
+        android:drawableStart="@android:drawable/ic_menu_save"
+        android:gravity="center_vertical|center|start"
+        android:text="@string/save_server_IP"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/serverIP_ET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:hint="@string/server_IP_hint"
+        android:imeOptions="flagNoExtractUi"
+        android:inputType="text"
+        android:text="@string/server_IP"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/saveServerIP_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/response_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/here_will_be_server_response"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getYourScheduleFromServer_button" />
+
+    <Button
+        android:id="@+id/sendYourScheduleToServer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@android:drawable/ic_menu_upload"
+        android:drawableStart="@android:drawable/ic_menu_upload"
+        android:gravity="center_vertical|center|start"
+        android:text="@string/send_your_schedule_to_server"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/getYourScheduleFromServer_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@android:drawable/stat_sys_download"
+        android:drawableStart="@android:drawable/stat_sys_download"
+        android:gravity="center_vertical|center|start"
+        android:text="@string/get_your_schedule_from_server"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendYourScheduleToServer_button" />
+
+</android.support.constraint.ConstraintLayout>

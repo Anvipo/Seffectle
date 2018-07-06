@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/classSerialNumber_TV_CAV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/class_serial_number"
+            android:textAlignment="center"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/add_class_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/hidingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/classBeginTime_TV_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/class_begin_time" />
+
+            <EditText
+                android:id="@+id/classBeginTime_ET_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/my_custom_background"
+                android:hint="@string/class_begin_time"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="time"
+                android:maxLength="5"
+                android:padding="8dp"
+                android:selectAllOnFocus="false"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/classEndTime_TV_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/class_end_time" />
+
+            <EditText
+                android:id="@+id/classEndTime_ET_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/my_custom_background"
+                android:hint="@string/class_end_time"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="time"
+                android:maxLength="5"
+                android:padding="8dp"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/classType_TV_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/class_type" />
+
+            <Spinner
+                android:id="@+id/classType_S_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/my_custom_background"
+                android:entries="@array/class_types_array"
+                android:hint="@string/class_type"
+                android:paddingBottom="8dp"
+                android:paddingEnd="8dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="8dp"
+                android:paddingStart="0dp"
+                android:paddingTop="8dp"
+                android:spinnerMode="dialog"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/className_TV_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/class_name" />
+
+            <EditText
+                android:id="@+id/className_ET_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/my_custom_background"
+                android:hint="@string/class_name"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:padding="8dp"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/teacherName_TV_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/teacher_name" />
+
+            <EditText
+                android:id="@+id/teacherName_ET_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/my_custom_background"
+                android:hint="@string/teacher_name"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:padding="8dp"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/roomName_TV_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/room_name" />
+
+            <EditText
+                android:id="@+id/roomName_ET_CAV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/my_custom_background"
+                android:hint="@string/room_name"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="textEmailSubject"
+                android:maxLength="20"
+                android:padding="8dp"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/move_up_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/background_light"
+                    android:contentDescription="@string/move_up_this_class"
+                    app:srcCompat="@mipmap/ic_up" />
+
+                <ImageButton
+                    android:id="@+id/move_down_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/background_light"
+                    android:contentDescription="@string/move_down_this_class"
+                    app:srcCompat="@mipmap/ic_down" />
+
+                <ImageButton
+                    android:id="@+id/add_class_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/background_light"
+                    android:contentDescription="@string/add_new_class"
+                    app:srcCompat="@mipmap/ic_add" />
+
+                <ImageButton
+                    android:id="@+id/remove_class_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/background_light"
+                    android:contentDescription="@string/remove_this_class"
+                    app:srcCompat="@mipmap/ic_delete" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

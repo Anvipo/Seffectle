@@ -1,0 +1,70 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Seffectle</string>
+    <string name="action_change">Изменить расписание для этого дня</string>
+    <string name="action_remove">Очистить всё расписание</string>
+    <string name="class_begin_time">С</string>
+    <string name="class_end_time">До</string>
+    <string name="class_name">Название пары</string>
+    <string name="room_name">Номер аудитории</string>
+    <string name="teacher_name">Преподаватель</string>
+    <string name="save_schedule">Сохранить расписание</string>
+    <string name="class_serial_number">Пара #</string>
+
+    <string name="today_is">Сегодня</string>
+
+    <string name="accessToken_invalidated">AccessToken не действителен</string>
+    <string name="successful_authorization">Успешная авторизация</string>
+    <string name="unsuccessful_authorization">Неуспешная авторизация</string>
+    <string name="synchronize_with_server">Синхронизироваться с сервером</string>
+    <string name="here_will_be_server_response">Здесь выводится ответ сервера</string>
+    <string name="send_your_schedule_to_server">Отправить своё расписание на сервер</string>
+    <string name="get_your_schedule_from_server">Получить расписание с сервера</string>
+    <string name="save_server_IP">Сохранить IP сервера</string>
+    <string name="server_IP">192.168.1.68</string>
+    <string name="server_IP_hint">IP сервера</string>
+    <string name="server_response">ОТВЕТ СЕРВЕРА:</string>
+    <string name="send_feedback">Отправить сообщение обратной связи</string>
+    <string name="input_your_feedback_here">Здесь вводить текст обратной связи</string>
+    <string name="log_into_vk">Авторизоваться с помощью VK</string>
+    <string name="log_out_from_vk">Деавторизоваться из VK</string>
+    <string name="successful_logout">Успешная деавторизация</string>
+    <string name="class_type">Тип занятия</string>
+    <string name="weird_answer">Странный ответ</string>
+    <string name="schedule_was_edited_successfully">Расписание успешно изменено</string>
+    <string name="schedule_was_downloaded_successfully">Расписание было успешно получено</string>
+    <string name="feedback_was_uploaded_successfully">Сообщение успешно отправлено</string>
+    <string name="schedule_was_not_edited">Расписание не было изменено</string>
+    <string name="synchronization_was_not_complete">Синхронизация не была совершена</string>
+    <string name="feedback_was_not_uploaded">Сообщение не было отправлено</string>
+    <string name="you_must_log_in_to_use_the_server">Для работы с сервером необходимо авторизоваться</string>
+    <string name="cant_add_class">Больше предметов добавлять нельзя, а то устанете столько учиться</string>
+    <string name="move_up_this_class">Передвинуть вверху эту пару</string>
+    <string name="move_down_this_class">Передвинуть вниз эту пару</string>
+    <string name="add_new_class">Добавить новую пару</string>
+    <string name="delete_classes">Удалить все пары</string>
+    <string name="remove_this_class">Удалить эту пару</string>
+    <string name="format_begin_time_error">Ошибка в формате времени начала пары</string>
+    <string name="format_end_time_error">Ошибка в формате времени конца пары</string>
+    <string name="wrong_time_interval">Неправильный интервал времени</string>
+    <string name="time_of_classes_must_not_intersect">Время пар не должно пересекаться</string>
+    <string name="you_did_not_enter_the_message">Вы не ввели сообщение</string>
+    <string name="you_are_not_logged_in_via_VK">Вы не авторизовались через ВК</string>
+    <string name="entered_ip_is_not_correct">Введённое IP некорректно</string>
+    <string name="saved">сохранён</string>
+    <integer name="com_vk_sdk_AppId" tools:keep="@integer/com_vk_sdk_AppId">6255824</integer>
+
+    <string-array name="class_types_array">
+        <item>Практика/Семинар</item>
+        <item>Лекция</item>
+    </string-array>
+
+    <string-array name="days_of_week">
+        <item name="monday_string">Понедельник</item>
+        <item name="tuesday_string">Вторник</item>
+        <item name="wednesday_string">Среда</item>
+        <item name="thursday_string">Четверг</item>
+        <item name="friday_string">Пятница</item>
+        <item name="saturday_string">Суббота</item>
+        <item name="sunday_string">Воскресенье</item>
+    </string-array>
+</resources>
