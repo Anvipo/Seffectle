@@ -41,13 +41,13 @@ class AdapterMAF(private val classesList: List<ClassFromSchedule>) :
     ) : RecyclerView.ViewHolder(itemView) {
         //функция заполнения полей itemView
         fun bind(position: Int) {
-            classBeginTimeTV.text = classesList[position].classBeginTime
-            classEndTimeTV.text = classesList[position].classEndTime
-            classTypeTV.text = classesList[position].classType
-            teacherNameTV.text = classesList[position].teacherName
-            classNameTV.text = classesList[position].className
-            roomNameTV.text = classesList[position].roomName
-            classSerialNumberTV.text = classesList[position].classSerialNumber
+            classBeginTimeTV.text = classesList[position].class_begin_time
+            classEndTimeTV.text = classesList[position].class_end_time
+            classTypeTV.text = classesList[position].class_type
+            teacherNameTV.text = classesList[position].teacher_name
+            classNameTV.text = classesList[position].class_name
+            roomNameTV.text = classesList[position].room_name
+            classSerialNumberTV.text = classesList[position].class_serial_number
         }
     }
 }

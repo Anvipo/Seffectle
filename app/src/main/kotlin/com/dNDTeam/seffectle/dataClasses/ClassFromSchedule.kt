@@ -7,13 +7,14 @@ import kotlinx.android.parcel.Parcelize
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class ClassFromSchedule(
-        val dayOfWeek: Int,
-        val userID: String = "",
-        var classBeginTime: String = "",
-        var classEndTime: String = "",
-        var classType: String = "",
-        var className: String = "",
-        var roomName: String = "",
-        var teacherName: String = "",
-        val classSerialNumber: String = "",
-        val scheduleCreationTime: String = "") : Parcelable
+    val day_of_week: Int,
+    val user_ID: String = "",
+    var class_begin_time: String = "",
+    var class_end_time: String = "",
+    var class_type: String = "",
+    var class_name: String = "",
+    var room_name: String = "",
+    var teacher_name: String = "",
+    val class_serial_number: String = "",
+    val schedule_creation_time: String = ""
+) : Parcelable

@@ -18,7 +18,6 @@ import com.dNDTeam.seffectle.R.string.today_is
 import com.dNDTeam.seffectle.db.ScheduleMSQLOH
 import com.dNDTeam.seffectle.db.ScheduleMSQLOH.Companion.SCHEDULE_TABLE_NAME
 import com.dNDTeam.seffectle.db.database
-import com.dNDTeam.seffectle.db.getIPFrom
 import com.dNDTeam.seffectle.db.getVKUserInfoFrom
 import com.dNDTeam.seffectle.main.MainActivity.MyDayOfWeek.*
 import com.dNDTeam.seffectle.restClient.SynchronizeActivity
@@ -129,9 +128,9 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 longToast("${getString(today_is)} - ${daysOfWeek[temp].toLowerCase()}$address")
                 //когда temp == SUNDAY
-                tabs_AM.getTabAt(if (temp == SUNDAY.ordinal) MONDAY.ordinal else index)
-                    ?.select()
+                tabs_AM.getTabAt(if (temp == SUNDAY.ordinal) MONDAY.ordinal else index)?.select()
             }
+
             toastWasShown = true
         }
     }
@@ -139,8 +138,6 @@ class MainActivity : AppCompatActivity() {
     //функция для загрузки нужных данных
     @SuppressLint("NewApi")
     private fun loadDataAsync() = launch {
-        getIPFrom(database)
-
         getVKUserInfoFrom(database, this@MainActivity)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -158,6 +155,8 @@ class MainActivity : AppCompatActivity() {
         setupViewPager()
 
         tabs_AM.setupWithViewPager(container_AM)
+
+        loadDataAsync()
     }
 
     //заполнение ViewPager данными
@@ -250,7 +249,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        loadDataAsync()
+//        loadDataAsync()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -270,7 +269,7 @@ class MainActivity : AppCompatActivity() {
                 3 -> toast(getString(R.string.feedback_was_not_uploaded))
             }
             Activity.RESULT_FIRST_USER -> when (requestCode) {
-                2 -> toast(getString(R.string.you_must_log_in_to_use_the_server))
+                2 -> longToast(getString(R.string.you_must_log_in_to_use_the_server))
             }
         }
     }

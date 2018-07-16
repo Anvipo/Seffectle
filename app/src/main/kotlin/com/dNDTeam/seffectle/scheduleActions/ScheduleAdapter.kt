@@ -42,7 +42,7 @@ class ScheduleAdapter(
 
     private val newClass = ClassFromSchedule(selectedDay,
             VKUser.vkAccountOwner.vkId,
-        classSerialNumber = "${context.getString(R.string.class_serial_number)}${itemCount + 1}"
+        class_serial_number = "${context.getString(R.string.class_serial_number)}${itemCount + 1}"
     )
 
     private lateinit var mRecyclerView: RecyclerView
@@ -109,7 +109,7 @@ class ScheduleAdapter(
                 override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    items[layoutPosition].first.classType =
+                    items[layoutPosition].first.class_type =
                             context.resources.getStringArray(R.array.class_types_array)[position]
                 }
             }
@@ -169,15 +169,15 @@ class ScheduleAdapter(
 
             classSerialNumberTV.text =
                     "${context.getString(R.string.class_serial_number)}${position + 1}"
-            classBeginTimeET.setText(data.first.classBeginTime)
-            classEndTimeET.setText(data.first.classEndTime)
-            teacherNameET.setText(data.first.teacherName)
-            classNameET.setText(data.first.className)
-            roomNameET.setText(data.first.roomName)
+            classBeginTimeET.setText(data.first.class_begin_time)
+            classEndTimeET.setText(data.first.class_end_time)
+            teacherNameET.setText(data.first.teacher_name)
+            classNameET.setText(data.first.class_name)
+            roomNameET.setText(data.first.room_name)
 
             classTypeS.setSelection(
                     when {
-                        data.first.classType == context.resources.getStringArray(R.array.class_types_array)[0] -> 0
+                        data.first.class_type == context.resources.getStringArray(R.array.class_types_array)[0] -> 0
                         else -> 1
                     })
 
@@ -191,9 +191,12 @@ class ScheduleAdapter(
 
             override fun afterTextChanged(editable: Editable) {
                 when (field) {
-                    NotTimeFields.CLASS_NAME -> items[layoutPosition].first.className = editable.toString()
-                    NotTimeFields.ROOM_NAME -> items[layoutPosition].first.roomName = editable.toString()
-                    NotTimeFields.TEACHER_NAME -> items[layoutPosition].first.teacherName = editable.toString()
+                    NotTimeFields.CLASS_NAME -> items[layoutPosition].first.class_name =
+                            editable.toString()
+                    NotTimeFields.ROOM_NAME -> items[layoutPosition].first.room_name =
+                            editable.toString()
+                    NotTimeFields.TEACHER_NAME -> items[layoutPosition].first.teacher_name =
+                            editable.toString()
                 }
             }
         }
@@ -220,8 +223,10 @@ class ScheduleAdapter(
                 }
 
                 when (field) {
-                    TimeFields.CLASS_BEGIN_TIME -> items[layoutPosition].first.classBeginTime = editable.toString()
-                    TimeFields.CLASS_END_TIME -> items[layoutPosition].first.classEndTime = editable.toString()
+                    TimeFields.CLASS_BEGIN_TIME -> items[layoutPosition].first.class_begin_time =
+                            editable.toString()
+                    TimeFields.CLASS_END_TIME -> items[layoutPosition].first.class_end_time =
+                            editable.toString()
                 }
             }
         }

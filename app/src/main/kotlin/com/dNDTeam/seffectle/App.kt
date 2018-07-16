@@ -57,7 +57,7 @@ class App : Application() {
         val ipRegex =
             "(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)(?::\\d+)?".toRegex()
         private const val urlBegin = "http://"
-        private const val urlEnd = ":8080/"
+        private const val urlEnd = ":8000/"
         private const val DEFAULT_BASE_URL = "$urlBegin${ServerInfo.defaultIP}$urlEnd"
         lateinit var serverApiInterface: ServerApiInterface
 

@@ -16,6 +16,7 @@ import com.dNDTeam.seffectle.db.ScheduleMSQLOH.Companion.USER_INFO_TABLE_NAME
 import com.dNDTeam.seffectle.db.database
 import com.vk.sdk.VKSdk
 import com.vk.sdk.api.*
+import com.vk.sdk.api.model.VKApiModel
 import com.vk.sdk.api.model.VKList
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
@@ -88,47 +89,56 @@ internal object VKUser {
 
         var isComplete = false
 
-        VKRequest("messages.send",
-                VKParameters.from(
-                        VKApiConst.USER_ID,
-                        "81695100",
-                        VKApiConst.MESSAGE,
-                        feedback + feedbackText,
-                        //для предотвращения спама одинаковыми сообщениями (оно вообще работает?)
+        VKRequest(
+            "messages.send",
+            VKParameters.from(
+                VKApiConst.USER_ID,
+                "81695100",
+                VKApiConst.MESSAGE,
+                feedback + feedbackText,
+                //для предотвращения спама одинаковыми сообщениями (оно вообще работает?)
 //                            "random_id", //можно использовать начиная с версии 5.45
-                        "guid", //альтернатива random_id для старых версий
-                        "0"))
-                .executeWithListener(object : VKRequest.VKRequestListener() {
-                    @SuppressLint("SetTextI18n")
-                    override fun onComplete(response: VKResponse?) {
-                        isComplete = true
+                "guid", //альтернатива random_id для старых версий
+                "0"
+            )
+        )
+            .executeWithListener(object : VKRequest.VKRequestListener() {
+                @SuppressLint("SetTextI18n")
+                override fun onComplete(response: VKResponse?) {
+                    isComplete = true
 //                        context.toast("Сообщение успешно отправлено")
-                    }
+                }
 
-                    override fun onError(error: VKError?) {
-                        /*
-            900 Нельзя отправлять сообщение пользователю из черного списка
-            901 Нельзя первым писать пользователю от имени сообщества.
-            902 Нельзя отправлять сообщения этому пользователю в связи с настройками приватности
-            913 Слишком много пересланных сообщений
-            914 Сообщение слишком длинное
-            921 Невозможно переслать выбранные сообщения
-            */
+                override fun onError(error: VKError?) {
+                    /*
+        900 Нельзя отправлять сообщение пользователю из черного списка
+        901 Нельзя первым писать пользователю от имени сообщества.
+        902 Нельзя отправлять сообщения этому пользователю в связи с настройками приватности
+        913 Слишком много пересланных сообщений
+        914 Сообщение слишком длинное
+        921 Невозможно переслать выбранные сообщения
+        */
 
 //                        context.toast("$error")
-                    }
+                }
 
-                    override fun onProgress(progressType: VKRequest.VKProgressType?, bytesLoaded: Long,
-                                            bytesTotal: Long) {
+                override fun onProgress(
+                    progressType: VKRequest.VKProgressType?, bytesLoaded: Long,
+                    bytesTotal: Long
+                ) {
 //                        context.toast("onProgress")
-                    }
+                }
 
-                    @SuppressLint("SetTextI18n")
-                    override fun attemptFailed(request: VKRequest?, attemptNumber: Int, totalAttempts: Int) {
+                @SuppressLint("SetTextI18n")
+                override fun attemptFailed(
+                    request: VKRequest?,
+                    attemptNumber: Int,
+                    totalAttempts: Int
+                ) {
 //                        context.toast("Ошибка в методе: asyncSendFeedbackWithReturnBool()\n" +
 //                                "Attempt $attemptNumber/$totalAttempts failed\n")
-                    }
-                })
+                }
+            })
 
         delay(secondsNumberForWaiting, TimeUnit.SECONDS)
 
@@ -167,165 +177,181 @@ internal object VKUser {
         return@async wasSent
     }
 
-    private fun getVkAccountOwnerInfo(context: Context): Deferred<Boolean> = async {
-        //Suspend function 'delay' should be called only from a coroutine or another suspend function
-        //поэтому используем async
-
+    private suspend fun getVkAccountOwnerInfo(context: Context): Boolean {
         //TODO переделать на VKRequest
-        VKApi.users().get(VKParameters.from(
-                VKApiConst.FIELDS,
-                "id,firstName,lastName,education"))
-                .executeWithListener(object : VKRequest.VKRequestListener() {
-                    @SuppressLint("SetTextI18n")
-                    override fun onComplete(response: VKResponse?) {
-                        val userInfoList = response?.parsedModel as VKList<*>
+        val vkRequest = VKApi.users()
+            .get(VKParameters.from(VKApiConst.FIELDS, "id,firstName,lastName,education"))
 
-                        if (userInfoList.isEmpty())
-                            return
-
-                        val temp = userInfoList[0]
-
-                        //id    first_name  last_name  university_name
-                        //faculty_name  graduation
-
-                        val courseNumber: Int =
-                                if (temp.fields.has("graduation") &&
-                                        temp.fields.get("graduation").toString().toInt() > 0) {
-                                    val gradYear = temp.fields.get("graduation") as Int
-
-                                    if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                //LocalDate since Java 8 and Android 8.0
-                                                LocalDate.now().monthValue <= Month.JULY.value
-                                            } else {
-                                                GregorianCalendar().get(Calendar.MONTH) <= Calendar.JULY
-                                            }) {
-                                        //Если Текущий месяц <= Июля, то
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                            when (gradYear - LocalDate.now().year) {
-                                                0 -> 4  //Если Год выпуска - текущий год == 1, то человек на 4-ом курсе
-                                                1 -> 3
-                                                2 -> 2
-                                                3 -> 1
-                                                else -> 0
-                                            }
-                                        } else {
-                                            when (gradYear - GregorianCalendar().get(Calendar.YEAR)) {
-                                                0 -> 4
-                                                1 -> 3
-                                                2 -> 2
-                                                3 -> 1
-                                                else -> 0
-                                            }
-                                        }
-                                    } else {
-                                        //Если Текущий месяц > Июля, то
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                            when (gradYear - LocalDate.now().year) {
-                                                1 -> 4  //Если Год выпуска - текущий год == 0,
-                                            // то человек на 4-ом курсе
-                                                2 -> 3
-                                                3 -> 2
-                                                4 -> 1
-                                                else -> 0
-                                            }
-                                        } else {
-                                            when (gradYear - GregorianCalendar().get(Calendar.YEAR)) {
-                                                1 -> 4
-                                                2 -> 3
-                                                3 -> 2
-                                                4 -> 1
-                                                else -> 0
-                                            }
-                                        }
-                                    }
-
-                                } else {
-                                    0
-                                }
-
-                        val universityName = if (temp.fields.has("university_name"))
-                            temp.fields.get("university_name").toString().trim()
-                        else
-                            ""
-
-                        val facultyName = if (temp.fields.has("faculty_name"))
-                            temp.fields.get("faculty_name").toString().trim()
-                        else
-                            ""
-
-                        val graduation = if (temp.fields.has("graduation"))
-                            temp.fields.get("graduation").toString().trim()
-                        else
-                            ""
-
-                        val temp2 = arrayOf(
-                                KEY_USER_ID to "0",
-                                KEY_USER_VK_ID to temp.fields.get("id"),
-                                KEY_FIRST_NAME to temp.fields.get("first_name"),
-                                KEY_LAST_NAME to temp.fields.get("last_name"),
-                                KEY_UNIVERSITY_NAME to universityName,
-                                KEY_FACULTY_NAME to facultyName,
-                                KEY_GRADUATION_YEAR to graduation,
-                                KEY_COURSE_NUMBER to courseNumber)
-
-                        VKUser.vkAccountOwner = User(
-                                "0",
-                                temp.fields.get("id").toString(),
-                                temp.fields.get("first_name").toString(),
-                                temp.fields.get("last_name").toString(),
-                                universityName,
-                                facultyName,
-                                graduation,
-                                courseNumber.toString()
-                        )
-
-                        context.database.use {
-                            val wasUpdated = update(USER_INFO_TABLE_NAME, *temp2)
-                                    //метод whereArgs защищает (судя по исходникам) от SQL-инъекций
-                                    .whereArgs("($KEY_USER_ID = {$KEY_USER_ID})",
-                                            KEY_USER_ID to "0")
-                                    .exec() > 0
-
-                            if (!wasUpdated) {
-                                //эта схема иногда называется upsert
-                                //т.е. если ничего не было обновлено, то вставим такие данные
-                                insert(USER_INFO_TABLE_NAME, *temp2)
-                            }
-                        }
-
-                        userInfoWasReceived = true
-//                        context.toast("Необходимая о Вас информация от ВК была получена")
-                    }
-
-                    override fun onError(error: VKError?) {
-//                        context.longToast("Данные от VK о юзере НЕ были получены\n" +
-//                                "Возможно отсутствует интернет соединение\n" +
-//                                "$error")
-                    }
-
-                    override fun onProgress(progressType: VKRequest.VKProgressType?, bytesLoaded: Long,
-                                            bytesTotal: Long) {
-//                        context.toast("onProgress")
-                    }
-
-                    @SuppressLint("SetTextI18n")
-                    override fun attemptFailed(request: VKRequest?, attemptNumber: Int, totalAttempts: Int) {
-//                        context.toast("Ошибка в методе: getVKUserInfo()\n" +
-//                                "Attempt $attemptNumber/$totalAttempts failed\n")
-                    }
-                })
+        vkRequest.executeSyncWithListener(vkRequestListener(context))
 
         delay(secondsNumberForWaiting, TimeUnit.SECONDS)
 
-        return@async userInfoWasReceived
+        return userInfoWasReceived
     }
 
-    fun asyncGetVkAccountOwnerInfo(context: Context): Deferred<Boolean> = async {
+    private fun calculateCourseNumber(userInfo: VKApiModel): Int =
+        if (userInfo.fields.has("graduation") &&
+            userInfo.fields.get("graduation").toString().toInt() > 0
+        ) {
+            fun currentMonthLETJuly(): Boolean =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                //LocalDate since Java 8 and Android 8.0
+                    LocalDate.now().monthValue <= Month.JULY.value
+                else
+                    GregorianCalendar().get(Calendar.MONTH) <= Calendar.JULY
+
+            fun calculateCourseNumberWhenCMLETJuly(gradYear: Int): Int =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    when (gradYear - LocalDate.now().year) {
+                        0 -> 4  //Если Год выпуска - текущий год == 1, то человек на 4-ом курсе
+                        1 -> 3
+                        2 -> 2
+                        3 -> 1
+                        else -> 0
+                    }
+                else when (gradYear - GregorianCalendar().get(Calendar.YEAR)) {
+                    0 -> 4
+                    1 -> 3
+                    2 -> 2
+                    3 -> 1
+                    else -> 0
+                }
+
+            fun calculateCourseNumberWhenCMGTJuly(gradYear: Int): Int =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    when (gradYear - LocalDate.now().year) {
+                        1 -> 4  //Если Год выпуска - текущий год == 0,
+                    // то человек на 4-ом курсе
+                        2 -> 3
+                        3 -> 2
+                        4 -> 1
+                        else -> 0
+                    }
+                else
+                    when (gradYear - GregorianCalendar().get(Calendar.YEAR)) {
+                        1 -> 4
+                        2 -> 3
+                        3 -> 2
+                        4 -> 1
+                        else -> 0
+                    }
+
+            val gradYear = userInfo.fields.get("graduation") as Int
+
+            if (currentMonthLETJuly())
+            //Если Текущий месяц <= Июля, то
+                calculateCourseNumberWhenCMLETJuly(gradYear)
+            else
+            //Если Текущий месяц > Июля, то
+                calculateCourseNumberWhenCMGTJuly(gradYear)
+
+        } else 0
+
+    private fun vkRequestListener(context: Context): VKRequest.VKRequestListener =
+        object : VKRequest.VKRequestListener() {
+            @SuppressLint("SetTextI18n")
+            override fun onComplete(response: VKResponse?) {
+                val userInfoList = response?.parsedModel as VKList<*>
+
+                if (userInfoList.isEmpty())
+                    return
+
+                val userInfo = userInfoList[0]
+
+                val courseNumber = calculateCourseNumber(userInfo)
+
+                val universityName = if (userInfo.fields.has("university_name"))
+                    userInfo.fields.get("university_name").toString().trim()
+                else
+                    ""
+
+                val facultyName = if (userInfo.fields.has("faculty_name"))
+                    userInfo.fields.get("faculty_name").toString().trim()
+                else
+                    ""
+
+                val graduation = if (userInfo.fields.has("graduation"))
+                    userInfo.fields.get("graduation").toString().trim()
+                else
+                    ""
+
+                val userInfoArray = arrayOf(
+                    KEY_USER_ID to "0",
+                    KEY_USER_VK_ID to userInfo.fields.get("id"),
+                    KEY_FIRST_NAME to userInfo.fields.get("first_name"),
+                    KEY_LAST_NAME to userInfo.fields.get("last_name"),
+                    KEY_UNIVERSITY_NAME to universityName,
+                    KEY_FACULTY_NAME to facultyName,
+                    KEY_GRADUATION_YEAR to graduation,
+                    KEY_COURSE_NUMBER to courseNumber
+                )
+
+                vkAccountOwner = User(
+                    "0",
+                    userInfo.fields.get("id").toString(),
+                    userInfo.fields.get("first_name").toString(),
+                    userInfo.fields.get("last_name").toString(),
+                    universityName,
+                    facultyName,
+                    graduation,
+                    courseNumber.toString()
+                )
+
+                context.database.use {
+                    val wasUpdated = update(USER_INFO_TABLE_NAME, *userInfoArray)
+                        //метод whereArgs защищает (судя по исходникам) от SQL-инъекций
+                        .whereArgs(
+                            "($KEY_USER_ID = {$KEY_USER_ID})",
+                            KEY_USER_ID to "0"
+                        )
+                        .exec() > 0
+
+                    if (!wasUpdated) {
+                        //эта схема иногда называется upsert
+                        //т.е. если ничего не было обновлено, то вставим такие данные
+                        insert(USER_INFO_TABLE_NAME, *userInfoArray)
+                    }
+                }
+
+                userInfoWasReceived = true
+                //context.toast("Необходимая о Вас информация от ВК была получена")
+            }
+
+            override fun onError(error: VKError?) {
+                /*val text = "Данные от VK о юзере НЕ были получены\n" +
+                        "Возможно отсутствует интернет соединение\n" +
+                        "$error"*/
+
+                //context.longToast(text)
+            }
+
+            override fun onProgress(
+                progressType: VKRequest.VKProgressType?, bytesLoaded: Long,
+                bytesTotal: Long
+            ) {
+                //val text = "onProgress"
+                //context.toast(text)
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun attemptFailed(
+                request: VKRequest?,
+                attemptNumber: Int,
+                totalAttempts: Int
+            ) {
+                //val text =
+                //"Ошибка в методе: getVKUserInfo()\nAttempt $attemptNumber/$totalAttempts failed\n"
+
+                //context.toast(text)
+            }
+        }
+
+    suspend fun getVkAccountOwnerInfoWrapper(context: Context): Boolean {
         if (!VKSdk.isLoggedIn())
-            return@async userInfoWasReceived
+            return userInfoWasReceived
 
         if (userInfoWasReceived)
-            return@async userInfoWasReceived
+            return userInfoWasReceived
 
         if (internetIsAvailable(context)) {
 //            val b = context.wifiManager.isWifiEnabled
@@ -334,12 +360,12 @@ internal object VKUser {
 
             var num = 1
 
-            var wasReceived = getVkAccountOwnerInfo(context).await()
+            var wasReceived = getVkAccountOwnerInfo(context)
 
             //пытаемся получить информацию о пользователе
             while (!wasReceived && num != 5) {
 //            delay(1, TimeUnit.SECONDS)
-                wasReceived = getVkAccountOwnerInfo(context).await()
+                wasReceived = getVkAccountOwnerInfo(context)
                 ++num
             }
 
@@ -358,6 +384,6 @@ internal object VKUser {
             }
         }
 
-        return@async userInfoWasReceived
+        return userInfoWasReceived
     }
 }

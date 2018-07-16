@@ -9,7 +9,7 @@ import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.db.update
 
-internal fun getIPFrom(database: ScheduleMSQLOH) {
+internal fun getOrSetDefaultIPFrom(database: ScheduleMSQLOH) {
     if (ServerInfo.serverIP.isBlank()) {
         val temp = getServerIPFromDB(database)
 
@@ -22,8 +22,7 @@ internal fun getIPFrom(database: ScheduleMSQLOH) {
             val wasUpdated = update(
                 ScheduleMSQLOH.SERVER_INFO_TABLE_NAME,
                 ScheduleMSQLOH.KEY_SERVER_IP to ServerInfo.defaultIP
-            )
-                .exec() > 0
+            ).exec() > 0
 
             if (!wasUpdated)
             //эта схема иногда называется upsert
@@ -39,7 +38,7 @@ internal fun getIPFrom(database: ScheduleMSQLOH) {
 
 internal fun getServerIPFromDB(database: ScheduleMSQLOH): String? {
     return database.use {
-        return@use select(ScheduleMSQLOH.SERVER_INFO_TABLE_NAME)
+        select(ScheduleMSQLOH.SERVER_INFO_TABLE_NAME)
             .parseOpt(object : MapRowParser<String> {
                 override fun parseRow(columns: Map<String, Any?>) =
                     columns.getValue(ScheduleMSQLOH.KEY_SERVER_IP).toString()
@@ -47,7 +46,45 @@ internal fun getServerIPFromDB(database: ScheduleMSQLOH): String? {
     }
 }
 
-internal fun getVKUserInfoFrom(database: ScheduleMSQLOH, context: Context) {
+
+internal fun getOrSetDefaultUserInfoWasSentToServerFrom(database: ScheduleMSQLOH) {
+    if (!ServerInfo.userInfoWasSentToServer) {
+        val temp = getUserInfoWasSentToServerFrom(database)
+
+        if (temp != null)
+            ServerInfo.userInfoWasSentToServer = temp == "true"
+    }
+
+    if (!ServerInfo.userInfoWasSentToServer)
+        database.use {
+            val wasUpdated = update(
+                ScheduleMSQLOH.SERVER_INFO_TABLE_NAME,
+                ScheduleMSQLOH.KEY_SERVER_HAS_USER_INFO to false
+            ).exec() > 0
+
+            if (!wasUpdated)
+            //эта схема иногда называется upsert
+            //т.е. если ничего не было обновлено, то вставим такие данные
+                insert(
+                    ScheduleMSQLOH.SERVER_INFO_TABLE_NAME,
+                    ScheduleMSQLOH.KEY_SERVER_HAS_USER_INFO to false
+                )
+
+            ServerInfo.userInfoWasSentToServer = false
+        }
+}
+
+internal fun getUserInfoWasSentToServerFrom(database: ScheduleMSQLOH): String? {
+    return database.use {
+        select(ScheduleMSQLOH.SERVER_INFO_TABLE_NAME)
+            .parseOpt(object : MapRowParser<String> {
+                override fun parseRow(columns: Map<String, Any?>) =
+                    columns.getValue(ScheduleMSQLOH.KEY_SERVER_HAS_USER_INFO).toString()
+            })
+    }
+}
+
+internal suspend fun getVKUserInfoFrom(database: ScheduleMSQLOH, context: Context) {
     if (VKUser.vkAccountOwner.id.isBlank())
         database.use {
             val temp: User? = select(ScheduleMSQLOH.USER_INFO_TABLE_NAME)
@@ -64,7 +101,7 @@ internal fun getVKUserInfoFrom(database: ScheduleMSQLOH, context: Context) {
 
     if (VKUser.vkAccountOwner.id.isBlank())
     //запускаем асинхронно, не блокируя UI, получать данные о пользователе
-        VKUser.asyncGetVkAccountOwnerInfo(context)
+        VKUser.getVkAccountOwnerInfoWrapper(context)
 }
 
 //получить пары нужного дня

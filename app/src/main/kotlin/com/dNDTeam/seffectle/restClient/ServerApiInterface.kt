@@ -1,6 +1,5 @@
 package com.dNDTeam.seffectle.restClient
 
-import com.dNDTeam.seffectle.dataClasses.ServerResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -14,17 +13,17 @@ import retrofit2.http.Query
 //https://ziginsider.github.io/Volley-vs-Retrofit/
 interface ServerApiInterface {
     @GET("users")    //посылка GET запроса на Controller.BASE_URL + users/
-    fun sendUser(  //?
+    fun sendUserInfo(  //?
             @Query("data") data: String //отправляемый параметр "data"
-    ): Call<ServerResponse> //приходит ответ типа ServerResponse
+    ): Call<SendResponseModel> //приходит ответ типа ServerResponse
 
     @GET("schedules")    //посылка GET запроса на Controller.BASE_URL + schedules/
     fun sendClasses( //?
             @Query("data") data: String //отправляемый параметр "data"
-    ): Call<ServerResponse> //приходит ответ типа ServerResponse
+    ): Call<SendResponseModel> //приходит ответ типа ServerResponse
 
     @GET("schedules")    //посылка GET запроса на Controller.BASE_URL + schedules/
     fun getClasses( //?
             @Query("data") data: String //отправляемый параметр "data"
-    ): Call<ServerResponse> //приходит ответ типа ServerResponse
+    ): Call<GetScheduleResponseModel> //приходит ответ типа GetScheduleResponseModel
 }
